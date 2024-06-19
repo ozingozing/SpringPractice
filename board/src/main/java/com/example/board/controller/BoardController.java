@@ -3,6 +3,12 @@ package com.example.board.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.board.dto.LoginInfo;
+
+import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,7 +28,10 @@ public class BoardController {
      * classpath:/templates/list.html
      */
     @GetMapping("/")
-    public String list() {
+                      //HttpSession, Model은 Spring이 자동으로 넣어줌 아니 스프링이 뭐 다하는데 난 뭐함?;;;
+    public String list(HttpSession session, org.springframework.ui.Model model) {
+        LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
+        model.addAttribute("loginInfo", loginInfo);
         return "list";
     }
     
