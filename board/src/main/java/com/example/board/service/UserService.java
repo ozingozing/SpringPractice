@@ -34,6 +34,9 @@ public class UserService {
     @Transactional
     public User addUser(String name, String email, String password) {
         //트랜잭션 시작
+        if(userDao.getUser(email) != null) {
+            throw new RuntimeException("이미 가입된 메일입니다.\n");
+        }
         User user = userDao.addUser(email, name, password);
         userDao.mappingUserRole(user.getUserId());
         return user;

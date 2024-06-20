@@ -104,4 +104,26 @@ public class BoardDao {
         // 정의한 SQL 쿼리와 매개변수를 사용하여 단일 결과 객체(Board)를 쿼리하고 반환합니다.
         return jdbcTemplate.queryForObject(sql, params, rowMapper);
     }
+
+    @Transactional
+    public void deleteBoard(int boardId) {
+        String sql = "delete from board where board_id = :boardId";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("boardId", boardId);
+        // 정의한 SQL 쿼리와 매개변수를 사용하여 데이터베이스에 업데이트 작업을 수행합니다.
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Transactional
+    public void updateBoard(int boardId, String title, String content) {
+        String sql = "update board\n" +
+                     "set title = :title, content = :content\n" +
+                     "Where board_id = :boardId";
+        Board board = new Board();
+        board.setBoardId(boardId);
+        board.setTitle(title);
+        board.setContent(content);
+        SqlParameterSource parmas = new BeanPropertySqlParameterSource(board);
+        jdbcTemplate.update(sql, parmas);
+    }
 }
